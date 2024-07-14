@@ -47,6 +47,35 @@ public class Database
         return ranks;
     }
 
+    public async Task<Dictionary<string, int>> GetCurrentELOAsync()
+    {
+        var ranks = new Dictionary<string, int>();
+
+        try
+        {
+            await using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var commandText = $"SELECT `steam`, `value` FROM `{_tableName}`";
+            await using var command = new MySqlCommand(commandText, connection);
+
+            await using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var steamId = reader.GetString("steam");
+                var rank = reader.GetInt32("value");
+                ranks[steamId] = rank;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in GetCurrentELOAsync: {ex}");
+        }
+
+        return ranks;
+    }
+
+
     public async Task UpdateUsersInDbWithRetry(IEnumerable<User> users)
     {
         const int maxRetries = 3;

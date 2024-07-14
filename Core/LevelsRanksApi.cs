@@ -55,6 +55,11 @@ public class LevelsRanksApi : ILevelsRanksApi
         return await _levelsRanks.Database.GetCurrentRanksAsync();
     }
 
+    public async Task<Dictionary<string, int>> GetCurrentELOAsync()
+    {
+        return await _levelsRanks.Database.GetCurrentELOAsync();
+    }
+
     public ulong ConvertToSteamId64(string steamId)
     {
         return SteamIdConverter.ConvertToSteamId64(steamId);
@@ -83,5 +88,9 @@ public class LevelsRanksApi : ILevelsRanksApi
     public double GetExperienceMultiplier(string steamId)
     {
         return _levelsRanks.GetExperienceMultiplier(steamId);
+    }
+
+    public void ReloadConfigs()
+    {
     }
 }
