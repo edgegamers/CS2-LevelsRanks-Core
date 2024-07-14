@@ -411,7 +411,7 @@ public class LevelsRanks : BasePlugin
                         SteamId = steamIdStr,
                         Name = playerName,
                         LastConnect = (int)currentTime,
-                        Value = StatisticType == "1" || StatisticType == "2" ? 1000 : 0,
+                        Value = StatisticType == "1" || StatisticType == "2" ? 10000 : 0,
                         Rank = 1
                     };
                     await Database.AddUserToDb(userFromDb);
@@ -550,7 +550,7 @@ public class LevelsRanks : BasePlugin
                         SteamId = steamIdStr,
                         Name = playerName,
                         LastConnect = (int)currentTime,
-                        Value = StatisticType == "1" || StatisticType == "2" ? 1000 : 0
+                        Value = StatisticType == "1" || StatisticType == "2" ? 10000 : 0
                     };
                     await Database.AddUserToDb(userFromDb);
                 }
@@ -1284,7 +1284,7 @@ public void HandleRankCommand(CCSPlayerController? player, CommandInfo commandIn
 
 
         if (StatisticType == "1" || StatisticType == "2")
-            user.Value = 1000;
+            user.Value = 10000;
         else
             user.Value = 0;
 
