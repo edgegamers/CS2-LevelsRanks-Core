@@ -1051,7 +1051,7 @@ public void HandleRankCommand(CCSPlayerController? player, CommandInfo commandIn
         return;
     }
 
-    var searchTerm = commandInfo.ArgCount < 2 ? player.PlayerName : commandInfo.GetArg(1);
+    var searchTerm = commandInfo.ArgCount < 2 ? player.SteamID.ToString() : commandInfo.GetArg(1);
     bool isSteamId = searchTerm.All(char.IsDigit);
 
     Task.Run(async () =>
@@ -1060,6 +1060,7 @@ public void HandleRankCommand(CCSPlayerController? player, CommandInfo commandIn
         var totalPlayers = 0;
         var playerRank = 0;
         double kdr = 0;
+        string rank = "";
 
         try
         {
@@ -1079,12 +1080,13 @@ public void HandleRankCommand(CCSPlayerController? player, CommandInfo commandIn
                 totalPlayers = rankAndTotalPlayers.totalPlayers;
                 playerRank = rankAndTotalPlayers.playerRank;
                 kdr = user.Deaths > 0 ? (double)user.Kills / user.Deaths : user.Kills;
+                rank = Localizer[$"rank_{user.Rank}"];   
             }
 
             var message = user == null
                 ? ReplaceColorPlaceholders(Localizer["player_not_found", searchTerm])
                 : ReplaceColorPlaceholders(Localizer["player_stats", user.Name!, playerRank, totalPlayers,
-                    user.Value, user.Kills, user.Deaths, kdr]);
+                    user.Value, user.Kills, user.Deaths, kdr, rank]);
 
             Server.NextFrame(() =>
             {
