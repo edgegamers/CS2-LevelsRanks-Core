@@ -1051,8 +1051,14 @@ public void HandleRankCommand(CCSPlayerController? player, CommandInfo commandIn
         return;
     }
 
-    var searchTerm = commandInfo.ArgCount < 2 ? player.SteamID.ToString() : commandInfo.GetArg(1);
-    bool isSteamId = searchTerm.All(char.IsDigit);
+    var searchTerm = commandInfo.ArgCount < 2 ? player.AuthorizedSteamID?.SteamId2 ?? player.SteamID.ToString(): commandInfo.GetArg(1);
+    var isSteamId = searchTerm.All(char.IsDigit);
+    if (isSteamId && ulong.TryParse(searchTerm, out var steam))
+    {
+        searchTerm = SteamIdConverter.ConvertToSteamId(steam);
+    }
+
+    isSteamId = isSteamId || searchTerm.Contains("STEAM_");
 
     Task.Run(async () =>
     {
