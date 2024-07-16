@@ -970,7 +970,7 @@ public class LevelsRanks : BasePlugin
             {
                 var expChange = (int)ExperienceSettings.GetExperience("0", "lr_bombplanted");
                 ApplyExperienceUpdateSync(user, player, expChange, Localizer["bomb_planted"],
-                    Localizer["bomb_planted"]);
+                    Localizer["bomb_planted_color"]);
             }
         }
 
